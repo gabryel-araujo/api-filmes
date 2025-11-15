@@ -1,0 +1,49 @@
+version: "3.9"
+
+services:
+  api:
+    build: .
+    container_name: webflix
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    environment:
+      NODE_ENV: docker
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+      DB_NAME: webflix
+    command: npm run dev:docker
+    volumes:
+      - .:/app
+      - /app/node_modules
+    develop:
+      watch:
+        - action: sync
+          path: ./package.json
+          target: /app/package.json
+        - action: sync
+          path: ./package-lock.json
+          target: /app/package-lock.json
+          ignore:
+            - node_modules/
+        - action: rebuild
+          path: ./package.json
+
+  db:
+    image: postgres:15-alpine
+    container_name: postgres_db_movies
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: webflix
+    ports:
+      - "5433:5432"
+    #volumes:
+    #  - postgres_data:/var/lib/postgresql/data
+    #  - ./db/script.sql:/docker-entrypoint-initdb.d/script.sql
+
+volumes:
+  postgres_data:
