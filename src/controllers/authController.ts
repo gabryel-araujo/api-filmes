@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { AuthService } from "../services/authService";
+import { AuthService } from "../services/AuthService";
 import { AuthError } from "../errors/AuthError";
 
 export const createNewUser = async (req: Request, res: Response) => {
