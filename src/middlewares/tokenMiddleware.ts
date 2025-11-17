@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken";
 import { config } from "../config/config";
 
 interface JwtPayload {
-  id: number;
+  id: string;
   email: string;
 }
 
@@ -34,6 +34,6 @@ export const authenticate = (
 
 declare module "express" {
   export interface Request {
-    userId?: number;
+    userId?: string;
   }
 }
